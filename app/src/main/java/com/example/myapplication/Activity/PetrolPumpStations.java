@@ -1,7 +1,10 @@
 package com.example.myapplication.Activity;
 
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.location.Location;
 import android.os.Bundle;
 
@@ -17,6 +20,7 @@ import com.example.myapplication.Fragment.ProfileFragment;
 import com.example.myapplication.MainActivity;
 import com.example.myapplication.Modal.PetrolPumps;
 import com.example.myapplication.R;
+import com.example.myapplication.Services.LocationMonitoringService;
 import com.example.myapplication.adapter.PetrolPumpsAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -24,6 +28,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -88,6 +93,19 @@ public class PetrolPumpStations extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_petrol_pump_stations);
         BottomNavigationView navView = findViewById(R.id.nav_view);
+        LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(new BroadcastReceiver()
+        {
+            @Override
+            public void onReceive(Context context, Intent intent)
+            {
+                String latitude = intent.getStringExtra(LocationMonitoringService.EXTRA_LATITUDE);
+                String longitude = intent.getStringExtra(LocationMonitoringService.EXTRA_LONGITUDE);
+//                moving.setLatitude(Double.parseDouble(latitude));
+//                moving.setLongitude(Double.parseDouble(longitude));
+                Log.d("Maincurr_lattitude",latitude);
+                Log.d("Maincurr_longitude",longitude);
+            }
+        }, new IntentFilter(LocationMonitoringService.ACTION_LOCATION_BROADCAST));
 //        mTextMessage = findViewById(R.id.message);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         loadFragment(new HomeFragment());

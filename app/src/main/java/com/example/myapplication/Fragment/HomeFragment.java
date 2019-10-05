@@ -1,8 +1,10 @@
 package com.example.myapplication.Fragment;
 
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
@@ -13,6 +15,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,12 +36,14 @@ import com.example.myapplication.Activity.PetrolPumpStations;
 import com.example.myapplication.MainActivity;
 import com.example.myapplication.Modal.PetrolPumps;
 import com.example.myapplication.R;
+import com.example.myapplication.Services.LocationMonitoringService;
 import com.example.myapplication.adapter.PetrolPumpsAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -62,10 +67,13 @@ public class HomeFragment extends Fragment implements LocationListener {
     private List<PetrolPumps> petrolPumpsList = new ArrayList<>();
     private RecyclerView recyclerView;
     private PetrolPumpsAdapter petrolPumpsAdapter;
-    private static final String URL_DATA = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=28.7529669,77.4947532&radius=10000&type=gas_station&sensor=true&key=AIzaSyBB8XJoy1ImPGUVUu_SOTwtCgXnosDC3rM";
+    //    private static String URL_DATA = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=28.7529669,77.4947532&radius=10000&type=gas_station&sensor=true&key=AIzaSyBB8XJoy1ImPGUVUu_SOTwtCgXnosDC3rM";
+    private static String URL_DATA = "";
     Location myLoc = new Location("");
     LocationManager locationManager;
     String latti = "", longit = "";
+    String latitude = "", longitude = "";
+    String finalLat="" , finallng="" ;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -108,9 +116,49 @@ public class HomeFragment extends Fragment implements LocationListener {
         getLocation();
         SharedPreferences sharedPreferences = getContext().getSharedPreferences("userInfo",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("curr_lattitude",latti);
-        editor.putString("curr_longitude",longit);
-        editor.apply();
+        String curr_lat = sharedPreferences.getString("curr_lat","");
+        String curr_lng = sharedPreferences.getString("curr_lng","");
+        Log.d("current",curr_lat+"\n"+curr_lng);
+        URL_DATA = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=+"+Double.parseDouble(curr_lat)+","+Double.parseDouble(curr_lng)+"&radius=10000&type=gas_station&sensor=true&key=AIzaSyBB8XJoy1ImPGUVUu_SOTwtCgXnosDC3rM";
+//        LocalBroadcastManager.getInstance(getContext()).registerReceiver(new BroadcastReceiver()
+//        {
+//            @Override
+//            public void onReceive(Context context, Intent intent)
+//            {
+//                latitude = intent.getStringExtra(LocationMonitoringService.EXTRA_LATITUDE);
+//                longitude = intent.getStringExtra(LocationMonitoringService.EXTRA_LONGITUDE);
+////                moving.setLatitude(Double.parseDouble(latitude));
+////                moving.setLongitude(Double.parseDouble(longitude));
+//                Log.d("curr_lattitudeService",latitude);
+//                Log.d("curr_longitudeService",longitude);
+//            }
+//        }, new IntentFilter(LocationMonitoringService.ACTION_LOCATION_BROADCAST));
+//        Log.d("curr_lattitudeMethod",latti);
+//        Log.d("curr_longitudeMethod",longit);
+//        if(!latti.equals("")){
+//            double x = Double.parseDouble(latti);
+//            double y = Double.parseDouble(longit);
+//            finalLat = x+"";
+//            finallng = y+"";
+////            editor.putString("curr_lattitude",finalLat);
+////            editor.putString("curr_longitude",finallng);
+//            Log.d("finalMessage1","message");
+//            Log.d("finalCurrentLocation1",finalLat+"\n"+finallng);
+//            URL_DATA = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=+"+x+","+y+"&radius=10000&type=gas_station&sensor=true&key=AIzaSyBB8XJoy1ImPGUVUu_SOTwtCgXnosDC3rM";
+//        }else if(!latitude.equals("")){
+//            double x = Double.parseDouble(latitude);
+//            double y = Double.parseDouble(longitude);
+//            finalLat = x+"";
+//            finallng = y+"";
+////            editor.putString("curr_lattitude",finalLat);
+////            editor.putString("curr_longitude",finallng);
+//            Log.d("finalMessage2","message");
+//            Log.d("finalCurrentLocation2",finalLat+"\n"+finallng);
+//            URL_DATA = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=+"+x+","+y+"&radius=10000&type=gas_station&sensor=true&key=AIzaSyBB8XJoy1ImPGUVUu_SOTwtCgXnosDC3rM";
+//        }
+//        Log.d("finalMessage","message");
+//        Log.d("finalCurrentLocation",finalLat+"\n"+finallng);
+//        editor.apply();
         View view =  inflater.inflate(R.layout.fragment_home, container, false);
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
