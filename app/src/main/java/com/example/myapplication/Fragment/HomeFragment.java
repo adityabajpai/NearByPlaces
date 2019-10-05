@@ -196,6 +196,8 @@ public class HomeFragment extends Fragment implements LocationListener {
                         Location src_loc = new Location("");
                         src_loc.setLatitude(lat);
                         src_loc.setLongitude(lng);
+                        myLoc.setLatitude(28.7536166);
+                        myLoc.setLongitude(77.4940364);
 //                        String calc = ((myLoc.distanceTo(src_loc))/1000)+" km";
                         String calc = String.format("%.2f",(myLoc.distanceTo(src_loc))/1000);
                         calc = "Distance: "+calc+" km";

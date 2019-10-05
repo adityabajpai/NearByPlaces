@@ -16,9 +16,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myapplication.Activity.MapsActivity;
 import com.example.myapplication.Helper.DatabaseHelper;
 import com.example.myapplication.Modal.PetrolPumps;
 import com.example.myapplication.R;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +57,8 @@ public class PetrolPumpsAdapter extends RecyclerView.Adapter<PetrolPumpsAdapter.
         Log.d("res",res+"");
         if(res.getCount()==0){
             Log.d("Count","0");
-            Toast.makeText(context,"No data",Toast.LENGTH_LONG).show();
+//            Snackbar.make(context,"No Favourites Yet",Snackbar.LENGTH_LONG).show();
+//            Toast.makeText(context,"No Favourites Yet",Toast.LENGTH_LONG).show();
         }else{
             StringBuffer buffer = new StringBuffer();
             while(res.moveToNext()){
@@ -92,10 +95,10 @@ public class PetrolPumpsAdapter extends RecyclerView.Adapter<PetrolPumpsAdapter.
                 myViewHolder.red_image.setVisibility(View.VISIBLE);
 //                databaseHelper = new DatabaseHelper(context);
                 boolean isInserted = databaseHelper.insertData(petrolPumps.getName(),petrolPumps.getRating(),(petrolPumps.getSrc_lat()),(petrolPumps.getSrc_lng()));
-                if(isInserted)
-                    Toast.makeText(context,"Data is Inserted",Toast.LENGTH_LONG).show();
-                else
-                    Toast.makeText(context,"Data is Inserted",Toast.LENGTH_LONG).show();
+//                if(isInserted)
+//                    Toast.makeText(context,"Data is Inserted",Toast.LENGTH_LONG).show();
+//                else
+//                    Toast.makeText(context,"Data is Inserted",Toast.LENGTH_LONG).show();
 //                Set<PetrolPumps> al = new HashSet<>();
 //                PetrolPumps petrolPumps1 = new PetrolPumps(petrolPumps.getName(),petrolPumps.getRating(),petrolPumps.getDistance(),"red");
 //                al.add(petrolPumps1);
@@ -111,12 +114,12 @@ public class PetrolPumpsAdapter extends RecyclerView.Adapter<PetrolPumpsAdapter.
         myViewHolder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(context, MapsActivity.class);
-//                Bundle bundle = new Bundle();
-//                bundle.putString("src_lat",petrolPumps.getSrc_lat());
-//                bundle.putString("src_lng",petrolPumps.getSrc_lng());
-//                intent.putExtras(bundle);
-//                context.startActivity(intent);
+                Intent intent = new Intent(context, MapsActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("src_lat",petrolPumps.getSrc_lat());
+                bundle.putString("src_lng",petrolPumps.getSrc_lng());
+                intent.putExtras(bundle);
+                context.startActivity(intent);
             }
         });
     }

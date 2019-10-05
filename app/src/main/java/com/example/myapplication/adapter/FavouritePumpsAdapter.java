@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myapplication.Activity.MapsActivity;
 import com.example.myapplication.Helper.DatabaseHelper;
 import com.example.myapplication.Modal.PetrolPumps;
 import com.example.myapplication.R;
@@ -76,21 +77,21 @@ public class FavouritePumpsAdapter extends RecyclerView.Adapter<FavouritePumpsAd
                 myViewHolder.grey_image.setVisibility(View.VISIBLE);
                 Log.d("src_lat",petrolPumps.getSrc_lat());
                 Integer deleteRows = databaseHelper.deleteData(petrolPumps.getSrc_lat()+"");
-                if(deleteRows!=0)
-                    Toast.makeText(context,"Rows deleted",Toast.LENGTH_LONG).show();
-                else
-                    Toast.makeText(context,"Rows not deleted",Toast.LENGTH_LONG).show();
+//                if(deleteRows!=0)
+//                    Toast.makeText(context,"Rows deleted",Toast.LENGTH_LONG).show();
+//                else
+//                    Toast.makeText(context,"Rows not deleted",Toast.LENGTH_LONG).show();
             }
         });
         myViewHolder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(context, MapsActivity.class);
-//                Bundle bundle = new Bundle();
-//                bundle.putString("src_lat",petrolPumps.getSrc_lat());
-//                bundle.putString("src_lng",petrolPumps.getSrc_lng());
-//                intent.putExtras(bundle);
-//                context.startActivity(intent);
+                Intent intent = new Intent(context, MapsActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("src_lat",petrolPumps.getSrc_lat());
+                bundle.putString("src_lng",petrolPumps.getSrc_lng());
+                intent.putExtras(bundle);
+                context.startActivity(intent);
             }
         });
     }

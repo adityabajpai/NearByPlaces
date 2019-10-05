@@ -21,6 +21,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.myapplication.R;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -86,7 +87,7 @@ public class ProfileFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_profile, container, false);
@@ -105,6 +106,7 @@ public class ProfileFragment extends Fragment {
                 else
                 {
                     saveUserInfo(userName.getText()+"",userAddress.getText()+"",gender);
+                    Snackbar.make(container,"Information Saved!!",Snackbar.LENGTH_LONG).show();
                 }
             }
         });
@@ -166,7 +168,7 @@ public class ProfileFragment extends Fragment {
         editor.putString("userAddress",userAddress);
         editor.putString("gender",gender);
         editor.apply();
-        Toast.makeText(getContext(),"Information Saved!!!",Toast.LENGTH_LONG).show();
+//        Toast.makeText(getContext(),"Information Saved!!!",Toast.LENGTH_LONG).show();
     }
 
     // TODO: Rename method, update argument and hook method into UI event

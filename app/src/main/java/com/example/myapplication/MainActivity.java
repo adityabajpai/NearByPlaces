@@ -57,8 +57,8 @@ public class MainActivity extends AppCompatActivity {
         gps = new GPSTracker(getApplicationContext());
         if(gps.canGetLocation()){
             Location location = gps.getLocation();
-            Log.d("Mainlat",location.getLatitude()+"");
-            Log.d("Mainlong",location.getLongitude()+"");
+//            Log.d("Mainlat",location.getLatitude()+"");
+//            Log.d("Mainlong",location.getLongitude()+"");
         }
 //        getLocation();
         Log.e("started","started");

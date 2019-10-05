@@ -20,6 +20,7 @@ import com.example.myapplication.Helper.DatabaseHelper;
 import com.example.myapplication.Modal.PetrolPumps;
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.FavouritePumpsAdapter;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,7 +95,7 @@ public class FavouriteFragment extends Fragment {
         Log.d("res",res+"");
         if(res.getCount()==0){
             Log.d("Count","0");
-            Toast.makeText(getContext(),"No data",Toast.LENGTH_LONG).show();
+            Snackbar.make(container,"No Favourites Yet",Snackbar.LENGTH_LONG).show();
         }else{
             StringBuffer buffer = new StringBuffer();
             while(res.moveToNext()){
