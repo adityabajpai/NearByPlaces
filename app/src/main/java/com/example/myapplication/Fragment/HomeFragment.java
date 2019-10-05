@@ -14,6 +14,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -114,6 +115,7 @@ public class HomeFragment extends Fragment implements LocationListener {
 //        String latti = bundle.getString("latti");
 //        String longit = bundle.getString("longit");
         getLocation();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
         SharedPreferences sharedPreferences = getContext().getSharedPreferences("userInfo",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         String curr_lat = sharedPreferences.getString("curr_lat","");

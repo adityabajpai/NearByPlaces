@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 
@@ -22,7 +23,12 @@ import com.example.myapplication.Modal.PetrolPumps;
 import com.example.myapplication.R;
 import com.example.myapplication.Services.LocationMonitoringService;
 import com.example.myapplication.adapter.PetrolPumpsAdapter;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.NonNull;
@@ -34,9 +40,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.appcompat.widget.Toolbar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -52,6 +60,8 @@ public class PetrolPumpStations extends AppCompatActivity  {
 //    private PetrolPumpsAdapter petrolPumpsAdapter;
 //    private static final String URL_DATA = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=28.7529669,77.4947532&radius=10000&type=gas_station&sensor=true&key=AIzaSyBB8XJoy1ImPGUVUu_SOTwtCgXnosDC3rM";
 //    Location myLoc = new Location("");
+    MaterialSearchView searchView;
+    PlaceAutocompleteFragment placeAutoComplete;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -93,6 +103,25 @@ public class PetrolPumpStations extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_petrol_pump_stations);
         BottomNavigationView navView = findViewById(R.id.nav_view);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        this.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar();
+        toolbar.setTitleTextColor(Color.parseColor("#ffffff"));
+//        searchView = findViewById(R.id.search_View);
+        placeAutoComplete = (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.place_autocomplete);
+        placeAutoComplete.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+
+                Log.d("Maps", "Place selected: " + place.getName());
+            }
+
+            @Override
+            public void onError(Status status) {
+                Log.d("Maps", "An error occurred: " + status);
+            }
+        });
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(new BroadcastReceiver()
         {
             @Override
@@ -121,8 +150,4 @@ public class PetrolPumpStations extends AppCompatActivity  {
 //        petrolPumpsAdapter.notifyDataSetChanged();
 
     }
-
-
-
-
 }

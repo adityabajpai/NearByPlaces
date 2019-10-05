@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.text.TextUtils;
@@ -96,6 +97,7 @@ public class ProfileFragment extends Fragment {
         userDOB = view.findViewById(R.id.userDOB);
         saveInfoBtn = view.findViewById(R.id.saveProfileBtn);
         userGender = view.findViewById(R.id.userGender);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
         displayData();
         saveInfoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
