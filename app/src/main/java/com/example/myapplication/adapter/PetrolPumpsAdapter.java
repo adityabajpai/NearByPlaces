@@ -1,18 +1,24 @@
 package com.example.myapplication.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myapplication.Activity.MapsActivity;
 import com.example.myapplication.Helper.DatabaseHelper;
 import com.example.myapplication.Modal.PetrolPumps;
 import com.example.myapplication.R;
@@ -48,11 +54,42 @@ public class PetrolPumpsAdapter extends RecyclerView.Adapter<PetrolPumpsAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull final PetrolPumpsAdapter.MyViewHolder myViewHolder, int i) {
+        databaseHelper = new DatabaseHelper(context);
+        ArrayList<String> al = new ArrayList<>();
+        Cursor res = databaseHelper.getAllData();
+        Log.d("res",res+"");
+        if(res.getCount()==0){
+            Log.d("Count","0");
+            Toast.makeText(context,"No data",Toast.LENGTH_LONG).show();
+        }else{
+            StringBuffer buffer = new StringBuffer();
+            while(res.moveToNext()){
+//                buffer.append("name "+res.getString(0));
+//                buffer.append("rating "+res.getString(1));
+//                buffer.append("lat "+res.getString(2));
+//                buffer.append("lng "+res.getString(3));
+                al.add(res.getString(0));
+//                Log.d("database",buffer+"\n");
+//                petrolPumps = new PetrolPumps(res.getString(0),res.getString(1),"Distance: 2km",res.getString(2),res.getString(3));
+//                petrolPumpsList.add(petrolPumps);
+//                FavouritePumpsAdapter = new FavouritePumpsAdapter(petrolPumpsList, getContext());
+//                recyclerView.setAdapter(FavouritePumpsAdapter);
+//                FavouritePumpsAdapter.notifyDataSetChanged();
+//                res.moveToNext();
+            }
+        }
+        Log.d("petrolPumpArrayList",al+"");
         final PetrolPumps petrolPumps = petrolPumpsList.get(i);
         myViewHolder.ratingBar.setText((petrolPumps.getRating())+"");
         myViewHolder.textView_distance.setText(petrolPumps.getDistance());
         myViewHolder.textView_name.setText(petrolPumps.getName());
         databaseHelper = new DatabaseHelper(context);
+        Log.d("petrolPumpName",petrolPumps.getName());
+        Log.d("petrolPumpCheck",al.contains(petrolPumps.getName())+"");
+        if(al.contains(petrolPumps.getName())){
+            myViewHolder.grey_image.setVisibility(View.GONE);
+            myViewHolder.red_image.setVisibility(View.VISIBLE);
+        }
         myViewHolder.grey_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,6 +113,17 @@ public class PetrolPumpsAdapter extends RecyclerView.Adapter<PetrolPumpsAdapter.
                 myViewHolder.grey_image.setVisibility(View.VISIBLE);
             }
         });
+        myViewHolder.relativeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, MapsActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("src_lat",petrolPumps.getSrc_lat());
+                bundle.putString("src_lng",petrolPumps.getSrc_lng());
+                intent.putExtras(bundle);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -88,6 +136,7 @@ public class PetrolPumpsAdapter extends RecyclerView.Adapter<PetrolPumpsAdapter.
         TextView textView_name, textView_distance;
         TextView ratingBar;
         ImageView red_image, grey_image;
+        RelativeLayout relativeLayout;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -96,6 +145,7 @@ public class PetrolPumpsAdapter extends RecyclerView.Adapter<PetrolPumpsAdapter.
             ratingBar = itemView.findViewById(R.id.rating);
             red_image = itemView.findViewById(R.id.red_favourite);
             grey_image = itemView.findViewById(R.id.grey_favourite);
+            relativeLayout = itemView.findViewById(R.id.relativeLayoutAll);
         }
     }
 }

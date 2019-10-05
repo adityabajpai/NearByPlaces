@@ -106,6 +106,11 @@ public class HomeFragment extends Fragment implements LocationListener {
 //        String latti = bundle.getString("latti");
 //        String longit = bundle.getString("longit");
         getLocation();
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("userInfo",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("curr_lattitude",latti);
+        editor.putString("curr_longitude",longit);
+        editor.apply();
         View view =  inflater.inflate(R.layout.fragment_home, container, false);
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -143,8 +148,9 @@ public class HomeFragment extends Fragment implements LocationListener {
                         Location src_loc = new Location("");
                         src_loc.setLatitude(lat);
                         src_loc.setLongitude(lng);
-                        String calc = ((int)(myLoc.distanceTo(src_loc))/1000)+" km";
-                        calc = "Distance: "+calc;
+//                        String calc = ((myLoc.distanceTo(src_loc))/1000)+" km";
+                        String calc = String.format("%.2f",(myLoc.distanceTo(src_loc))/1000);
+                        calc = "Distance: "+calc+" km";
                         Log.d("name",name+" "+about+" "+image+" "+rating+" "+lat+" "+lng+" "+calc);
                         petrolPumps = new PetrolPumps(name,rating,calc,lat+"", lng+"");
                         petrolPumpsList.add(petrolPumps);

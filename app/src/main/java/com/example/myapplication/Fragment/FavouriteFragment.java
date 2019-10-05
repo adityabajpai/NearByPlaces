@@ -111,6 +111,7 @@ public class FavouriteFragment extends Fragment {
 //                res.moveToNext();
             }
         }
+
         return view;
     }
 

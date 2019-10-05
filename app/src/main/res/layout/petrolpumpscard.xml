@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:background="#fff"
+    android:id="@+id/relativeLayoutAll"
     android:layout_height="wrap_content">
 
     <LinearLayout
@@ -175,7 +176,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="TOILETS"
+                        android:text="@string/toilets"
                         android:fontFamily="monospace"
                         android:gravity="center"
                         android:layout_weight="1"
@@ -193,7 +194,7 @@
                         android:textStyle="bold"
                         android:fontFamily="monospace"
                         android:gravity="center"
-                        android:text="CAFETERIA"
+                        android:text="@string/cafeteria"
                         android:layout_weight="1"
                         android:background="#E0362A"
                         android:textColor="#fff"/>

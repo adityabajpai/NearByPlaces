@@ -1,19 +1,23 @@
 package com.example.myapplication.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myapplication.Activity.MapsActivity;
 import com.example.myapplication.Helper.DatabaseHelper;
 import com.example.myapplication.Modal.PetrolPumps;
 import com.example.myapplication.R;
@@ -84,6 +88,17 @@ public class FavouritePumpsAdapter extends RecyclerView.Adapter<FavouritePumpsAd
                     Toast.makeText(context,"Rows not deleted",Toast.LENGTH_LONG).show();
             }
         });
+        myViewHolder.relativeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, MapsActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("src_lat",petrolPumps.getSrc_lat());
+                bundle.putString("src_lng",petrolPumps.getSrc_lng());
+                intent.putExtras(bundle);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -96,6 +111,7 @@ public class FavouritePumpsAdapter extends RecyclerView.Adapter<FavouritePumpsAd
         TextView textView_name, textView_distance;
         TextView ratingBar;
         ImageView red_image, grey_image;
+        RelativeLayout relativeLayout;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -104,6 +120,7 @@ public class FavouritePumpsAdapter extends RecyclerView.Adapter<FavouritePumpsAd
             ratingBar = itemView.findViewById(R.id.rating);
             red_image = itemView.findViewById(R.id.red_favourite);
             grey_image = itemView.findViewById(R.id.grey_favourite);
+            relativeLayout = itemView.findViewById(R.id.relativeLayoutFavourite);
         }
     }
 }
